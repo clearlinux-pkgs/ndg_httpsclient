@@ -4,7 +4,7 @@
 #
 Name     : ndg_httpsclient
 Version  : 0.4.0
-Release  : 7
+Release  : 8
 URL      : https://pypi.python.org/packages/source/n/ndg-httpsclient/ndg_httpsclient-0.4.0.tar.gz
 Source0  : https://pypi.python.org/packages/source/n/ndg-httpsclient/ndg_httpsclient-0.4.0.tar.gz
 Summary  : Provides enhanced HTTPS support for httplib and urllib2 using PyOpenSSL
