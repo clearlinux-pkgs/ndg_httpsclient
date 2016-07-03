@@ -1,4 +1,5 @@
 PKG_NAME := ndg_httpsclient
-URL := https://pypi.python.org/packages/source/n/ndg-httpsclient/ndg_httpsclient-0.4.0.tar.gz
+URL := http://pypi.debian.net/ndg_httpsclient/ndg_httpsclient-0.4.1.tar.gz
+ARCHIVES :=
 
 include ../common/Makefile.common
