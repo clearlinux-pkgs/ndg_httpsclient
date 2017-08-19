@@ -4,7 +4,7 @@
 #
 Name     : ndg_httpsclient
 Version  : 0.4.2
-Release  : 15
+Release  : 16
 URL      : http://pypi.debian.net/ndg_httpsclient/ndg_httpsclient-0.4.2.tar.gz
 Source0  : http://pypi.debian.net/ndg_httpsclient/ndg_httpsclient-0.4.2.tar.gz
 Summary  : Provides enhanced HTTPS support for httplib and urllib2 using PyOpenSSL
@@ -12,6 +12,7 @@ Group    : Development/Tools
 License  : BSD-3-Clause
 Requires: ndg_httpsclient-bin
 Requires: ndg_httpsclient-python
+Requires: pyasn1
 BuildRequires : pbr
 BuildRequires : pip
 BuildRequires : pyOpenSSL
@@ -20,10 +21,42 @@ BuildRequires : python3-dev
 BuildRequires : setuptools
 
 %description
-NDG HTTPS Client Unit tests directory
-=====================================
-The unit tests expect to connect to a simple HTTPS server listening on port
-4443.  An OpenSSL script is provided for this purpose in scripts/.  To run,
+A HTTPS client implementation for 
+         * ``httplib`` (Python 2), ``http.client`` (Python 3) and 
+         * ``urllib2`` (Python 2) and ``urllib`` (Python 3)
+        
+        ... based on PyOpenSSL.  PyOpenSSL provides a more fully featured SSL implementation 
+        over the default provided with Python and importantly enables full verification 
+        of the SSL peer using ``pyasn1``.
+        
+        Releases
+        ========
+        0.4.2
+        -----
+         * Fix to bug in ``ndg.httpsclient.utils.open_url`` - duplicate open call.  
+           Nb. This bug and the fix DO NOT affect the ``httplib``and ``urllib2`` 
+           interfaces that this package provides.
+        
+        0.4.1
+        -----
+         * Added explicit ref to Python 3 in classifier text for Python 3 checking tools.
+         * Moved LICENSE file into package
+        
+        0.4.0
+        -----
+         * Made dual compatible with Python 2 / 3.
+         
+        0.3.3
+        -----
+         * Fix to add in AnotherName for ``subjectAltNames`` field - added for support for CACert issued
+           certs (thanks to Gu1).
+         * Fix to HTTP Basic Auth option for ``ndg.httpsclient.utils.main``
+         * Fix to ``ServerSSLCertVerification`` so that it can pass a function-based callback instead of using ``__call__``. In newer versions of OpenSSL (>= 0.14) the latter failed because of a request for ``__name__`` attribute.
+        
+        0.3.2
+        -----
+         * Fix to SubjectAltNames support check - should only be enabled if pyasn1 is 
+           installed.
 
 %package bin
 Summary: bin components for the ndg_httpsclient package.
@@ -45,16 +78,22 @@ python components for the ndg_httpsclient package.
 %setup -q -n ndg_httpsclient-0.4.2
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1487184442
+export SOURCE_DATE_EPOCH=1503122240
 python2 setup.py build -b py2
 python3 setup.py build -b py3
 
 %install
-export SOURCE_DATE_EPOCH=1487184442
+export SOURCE_DATE_EPOCH=1503122240
 rm -rf %{buildroot}
 python2 -tt setup.py build -b py2 install --root=%{buildroot} --force
 python3 -tt setup.py build -b py3 install --root=%{buildroot} --force
+echo ----[ mark ]----
+cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
+echo ----[ mark ]----
 
 %files
 %defattr(-,root,root,-)
@@ -65,4 +104,5 @@ python3 -tt setup.py build -b py3 install --root=%{buildroot} --force
 
 %files python
 %defattr(-,root,root,-)
-/usr/lib/python*/*
+/usr/lib/python2*/*
+/usr/lib/python3*/*
