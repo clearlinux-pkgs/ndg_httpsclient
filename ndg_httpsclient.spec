@@ -4,7 +4,7 @@
 #
 Name     : ndg_httpsclient
 Version  : 0.4.3
-Release  : 18
+Release  : 19
 URL      : http://pypi.debian.net/ndg_httpsclient/ndg_httpsclient-0.4.3.tar.gz
 Source0  : http://pypi.debian.net/ndg_httpsclient/ndg_httpsclient-0.4.3.tar.gz
 Summary  : Provides enhanced HTTPS support for httplib and urllib2 using PyOpenSSL
@@ -12,6 +12,7 @@ Group    : Development/Tools
 License  : BSD-3-Clause
 Requires: ndg_httpsclient-bin
 Requires: ndg_httpsclient-legacypython
+Requires: ndg_httpsclient-python3
 Requires: ndg_httpsclient-python
 Requires: pyasn1
 BuildRequires : pbr
@@ -47,6 +48,7 @@ bin components for the ndg_httpsclient package.
 %package legacypython
 Summary: legacypython components for the ndg_httpsclient package.
 Group: Default
+Requires: python-core
 
 %description legacypython
 legacypython components for the ndg_httpsclient package.
@@ -56,9 +58,19 @@ legacypython components for the ndg_httpsclient package.
 Summary: python components for the ndg_httpsclient package.
 Group: Default
 Requires: ndg_httpsclient-legacypython
+Requires: ndg_httpsclient-python3
 
 %description python
 python components for the ndg_httpsclient package.
+
+
+%package python3
+Summary: python3 components for the ndg_httpsclient package.
+Group: Default
+Requires: python3-core
+
+%description python3
+python3 components for the ndg_httpsclient package.
 
 
 %prep
@@ -69,12 +81,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1504565973
+export SOURCE_DATE_EPOCH=1507160404
 python2 setup.py build -b py2
 python3 setup.py build -b py3
 
 %install
-export SOURCE_DATE_EPOCH=1504565973
+export SOURCE_DATE_EPOCH=1507160404
 rm -rf %{buildroot}
 python2 -tt setup.py build -b py2 install --root=%{buildroot} --force
 python3 -tt setup.py build -b py3 install --root=%{buildroot} --force
@@ -94,5 +106,8 @@ echo ----[ mark ]----
 /usr/lib/python2*/*
 
 %files python
+%defattr(-,root,root,-)
+
+%files python3
 %defattr(-,root,root,-)
 /usr/lib/python3*/*
