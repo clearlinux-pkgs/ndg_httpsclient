@@ -4,14 +4,13 @@
 #
 Name     : ndg_httpsclient
 Version  : 0.4.4
-Release  : 23
+Release  : 24
 URL      : http://pypi.debian.net/ndg_httpsclient/ndg_httpsclient-0.4.4.tar.gz
 Source0  : http://pypi.debian.net/ndg_httpsclient/ndg_httpsclient-0.4.4.tar.gz
 Summary  : Provides enhanced HTTPS support for httplib and urllib2 using PyOpenSSL
 Group    : Development/Tools
 License  : BSD-3-Clause
 Requires: ndg_httpsclient-bin
-Requires: ndg_httpsclient-legacypython
 Requires: ndg_httpsclient-python3
 Requires: ndg_httpsclient-python
 Requires: pyasn1
@@ -49,19 +48,9 @@ Group: Binaries
 bin components for the ndg_httpsclient package.
 
 
-%package legacypython
-Summary: legacypython components for the ndg_httpsclient package.
-Group: Default
-Requires: python-core
-
-%description legacypython
-legacypython components for the ndg_httpsclient package.
-
-
 %package python
 Summary: python components for the ndg_httpsclient package.
 Group: Default
-Requires: ndg_httpsclient-legacypython
 Requires: ndg_httpsclient-python3
 
 %description python
@@ -85,15 +74,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1517239448
-python2 setup.py build -b py2
+export SOURCE_DATE_EPOCH=1523292283
 python3 setup.py build -b py3
 
 %install
-export SOURCE_DATE_EPOCH=1517239448
 rm -rf %{buildroot}
-python2 -tt setup.py build -b py2 install --root=%{buildroot} --force
-python3 -tt setup.py build -b py3 install --root=%{buildroot} --force
+python3 -tt setup.py build -b py3 install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
@@ -104,10 +90,6 @@ echo ----[ mark ]----
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/ndg_httpclient
-
-%files legacypython
-%defattr(-,root,root,-)
-/usr/lib/python2*/*
 
 %files python
 %defattr(-,root,root,-)
