@@ -18,7 +18,7 @@ BuildRequires : pbr
 BuildRequires : pip
 BuildRequires : pyOpenSSL
 BuildRequires : pyasn1
-BuildRequires : python-dev
+
 BuildRequires : python3-dev
 BuildRequires : setuptools
 
